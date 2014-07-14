@@ -173,7 +173,7 @@ void compile(boost::program_options::variables_map vm,
     }
 
 	if(istart > istop) {
-		std::cout << "Test parameters are illegal (start > stop).\n"
+		std::cout << "Test parameters are illegal (start > stop).\n";
 		std::cout << "\tstart: " << start << "\n";
 		std::cout << "\tstop:  " << stop << "\n";
 		std::cout << "\tstep:  " << step << "\n";

@@ -8,7 +8,7 @@ mv syntax.tab.c syntax.tab.cpp
 mv syntax.tab.h syntax.tab.hpp
 cd ../
 autoreconf --install
-./configure --prefix=$(pwd) CXX='g++ -static' CXXFLAGS='-g -static -O2 -std=c++11' # -stdlib=libc++'
+./configure --prefix=$(pwd) CXX='g++ -static' CXXFLAGS='-static -O2 -std=c++11' # -stdlib=libc++'
 make -j4
 make install
 
