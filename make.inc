@@ -1,7 +1,7 @@
 
 ## settings to build BTO ##
-CC = gcc
-CPP = g++
+CC = gcc 
+CPP = g++ 
 
 ## settings to build empirical and correctness tests ##
 TCC=gcc

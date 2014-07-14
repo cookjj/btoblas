@@ -162,17 +162,25 @@ void compile(boost::program_options::variables_map vm,
 	if (pos != string::npos)
 		stop = testParam.substr(last, pos-last);
 	step = testParam.substr(pos+1,string::npos);
-	
-	if (boost::lexical_cast<int>(start) > boost::lexical_cast<int>(stop)) {
-		std::cout << "Test parameters are illegal (start > stop)\n";
+
+    int istart, istop, istep;
+    istart = boost::lexical_cast<int>(start);
+    istop  = boost::lexical_cast<int>(stop);
+    istep  = boost::lexical_cast<int>(step);
+
+    if(istart < 1 || istop < 1 || istep < 1) {
+		std::cout << "Test parameters are illegal: all values must be positive.\n";
+    }
+
+	if(istart > istop) {
+		std::cout << "Test parameters are illegal (start > stop).\n"
 		std::cout << "\tstart: " << start << "\n";
 		std::cout << "\tstop:  " << stop << "\n";
+		std::cout << "\tstep:  " << step << "\n";
 		return;
 	}
-	
-	modelMsg msg(boost::lexical_cast<int>(start),
-				 boost::lexical_cast<int>(stop),
-				 boost::lexical_cast<int>(step));
+
+	modelMsg msg(istart, istop, istep);
 	msg.pathToTop = pathToTop;
 	// build_machine 0 -> parallel, 1 -> serial
 	// msg.parallelArch = build_machine((char*)(pathToTop.c_str()),0);
