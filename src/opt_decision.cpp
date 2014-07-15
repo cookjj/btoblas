@@ -1220,9 +1220,10 @@ int smart_hybrid_search(graph &g, graph &baseGraph,
 }
 
 
-int smart_exhaustive(graph &g, graph &baseGraph, 
+void
+smart_exhaustive(graph &g, graph &baseGraph, 
 					 compile_details_t &cDet,
-                     build_details_t &bDet) {
+                     build_details_t &bDet, int &bestid) {
 	// Basic outline:
 	// turn all parts on, and see what ways we can turn on partitions 1 @ a time.
 	// for each permutation, find all legal fusions & test them.
@@ -1235,7 +1236,7 @@ int smart_exhaustive(graph &g, graph &baseGraph,
 	int fuseP = pt.num_nodes * (pt.num_nodes - 1) / 2;
 	
 	int vid = 0;
-	int bestid = 1;
+	bestid = 1;
 	double bestCost = 1e80;
 
 	vector< vector<bool> > legalparts;
@@ -1353,14 +1354,16 @@ int smart_exhaustive(graph &g, graph &baseGraph,
 			++i;
 			bnd = space.bounds(pt, i);
 			if (i >= pt.size()) {
-				return bestid;
+				return;
 			}
 		}
 		pt.set(i,min(bnd.high, pt.get(i)+bnd.stride));
 		i = fuseP;
 	}
-	return bestid;
+
+	return;
 }
+
 
 int debug_search(graph &g, graph &baseGraph, 
                  vector<partitionTree_t*> part_forest,

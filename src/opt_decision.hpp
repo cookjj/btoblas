@@ -118,9 +118,9 @@ int exhaustive_search(graph &g, graph &baseGraph,
                       compile_details_t &cDetails,
                       build_details_t &bDetails);
 
-int smart_exhaustive(graph &g, graph &baseGraph, 
+void smart_exhaustive(graph &g, graph &baseGraph, 
 				compile_details_t &cDetails,
-                build_details_t &bDetails);
+                build_details_t &bDetails, int &);
 
 int orthogonal_search(graph &g, graph &baseGraph, 
                       compile_details_t &cDetails,
@@ -142,4 +142,11 @@ double getPerformance(int vid, graph &g, graph &baseGraph,
                       bool strict,
                       compile_details_t &cDetails,
                       build_details_t &bDetails);
+
+int thread_search(graph &g, graph &baseGraph, 
+                 vector<partitionTree_t*> part_forest,
+                 compile_details_t &cDet,
+                 build_details_t &bDet); 
+
+
 #endif //OPT_DECISION_HPP

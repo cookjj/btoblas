@@ -10,7 +10,7 @@
 //#define DUMP_GRAPHS
 
 // output dot file for each version
-#define DUMP_DOT_FILES
+//#define DUMP_DOT_FILES
 
 // output vid : history string for each version.
 #define DUMP_VERSION_STRINGS

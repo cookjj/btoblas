@@ -33,6 +33,10 @@ extern "C" {
 //set precision type
 std::string precision_type;
 
+// for output
+std::string fileName, path, tmpPath;
+int bestVersion = 0;
+
 int MAX_PARTS;
 int partition_bounds[32][3];
 
@@ -42,8 +46,10 @@ void sig_term_handler(int signum) {
 
 void sig_alarm_handler(int signum) {
     cout << "\n\nTime Limit Reached; Terminating All Processes\n" << endl;
+    handleBestVersion(fileName, path, tmpPath, bestVersion);
     signal(SIGTERM, sig_term_handler);
-    killpg(getpgrp(),SIGTERM);
+//    killpg(getpgrp(),SIGTERM);
+    kill(getpid(), SIGTERM);
 }
 
 int parse_range(int* lo, int* hi, int* stride, string s) {
@@ -138,7 +144,6 @@ void compile(boost::program_options::variables_map vm,
 	// std::cout << pathToTop << std::endl;
 	
 	// set up temporary workspace
-	string tmpPath, fileName, path;
 	if (setUpWorkSpace(out_file_name, fileName, path, tmpPath, pathToTop,
                        vm.count("delete_tmp"))) {
 		std::cout << "Failed to set up temporary directory for unique implementations\n";
@@ -504,8 +509,9 @@ void compile(boost::program_options::variables_map vm,
 		{
 			std::cout << "entering exhaustive search" << endl;
 			//int numVersions = 5;
-			int bestVersion = smart_exhaustive(g, *baseGraph, 
-                                               cDetails, bDetails);
+
+            smart_exhaustive(g, *baseGraph, cDetails, bDetails, bestVersion);
+
 			// One way or another we have selected a version we are calling the best
 			// or we failed
 			if (bestVersion < 0) {
@@ -526,8 +532,7 @@ void compile(boost::program_options::variables_map vm,
 		{
 			std::cout << "entering orthogonal search" << endl;
 			//int numVersions = 5;
-			int bestVersion = orthogonal_search(g, *baseGraph, 
-                                                cDetails, bDetails);
+			int bestVersion = orthogonal_search(g, *baseGraph, cDetails, bDetails);
 			// One way or another we have selected a version we are calling the best
             
 			// or we failed
@@ -653,11 +658,7 @@ void compile(boost::program_options::variables_map vm,
             
         case thread:
 		{
-            int thread_search(graph &g, graph &baseGraph, 
-                              vector<partitionTree_t*> part_forest,
-                              compile_details_t &cDet,
-                              build_details_t &bDet);
-			std::cout << "entering thread search " << endl;
+          	std::cout << "entering thread search " << endl;
 			thread_search(g, *baseGraph, partitionForest,
                                            cDetails, bDetails);
 
